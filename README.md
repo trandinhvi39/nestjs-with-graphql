@@ -34,6 +34,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+With the server running, visit http://localhost:3000/graphql
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
