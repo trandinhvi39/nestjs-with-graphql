@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseFilters } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { Cat } from '../schema/graphql.schema';
@@ -6,6 +6,7 @@ import { Cat } from '../schema/graphql.schema';
 import { CatsGuard } from './cats.guard';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
 
 const pubSub = new PubSub();
 
@@ -25,6 +26,7 @@ export class CatsResolvers {
   }
 
   @Mutation('createCat')
+  @UseFilters(new HttpExceptionFilter())
   async create(@Args('createCatInput') args: CreateCatDto): Promise<Cat> {
     const createdCat = await this.catsService.create(args);
     pubSub.publish('catCreated', { catCreated: createdCat });
