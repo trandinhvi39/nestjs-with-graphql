@@ -1,7 +1,8 @@
-import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { Cat } from '../schema/graphql.schema';
+
 import { CatsGuard } from './cats.guard';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -19,10 +20,7 @@ export class CatsResolvers {
   }
 
   @Query('cat')
-  async findOneById(
-    @Args('id', ParseIntPipe)
-    id: number,
-  ): Promise<Cat> {
+  async findOneById(id: string): Promise<Cat> {
     return this.catsService.findOneById(id);
   }
 

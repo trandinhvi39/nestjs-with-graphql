@@ -1,21 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Cat } from '../schema/graphql.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+import { Cat } from './interfaces/cat.interface';
+import { CreateCatDto } from './dto/create-cat.dto';
 
 @Injectable()
 export class CatsService {
-  private readonly cats: Cat[] = [{ id: 1, name: 'Cat', age: 5 }];
+  constructor(@InjectModel('Cat') private readonly catModel: Model<Cat>) {}
 
-  create(cat: Cat): Cat {
-    cat.id = this.cats.length + 1;
-    this.cats.push(cat);
-    return cat;
+  async create(createCatDto: CreateCatDto): Promise<Cat> {
+    const createdCat = new this.catModel(createCatDto);
+    return createdCat.save();
   }
 
-  findAll(): Cat[] {
-    return this.cats;
+  async findAll(): Promise<Cat[]> {
+    return this.catModel.find().exec();
   }
 
-  findOneById(id: number): Cat {
-    return this.cats.find(cat => cat.id === id);
+  async findOneById(id: string): Promise<Cat> {
+    return this.catModel.findOne({ id: id }).exec();
   }
 }
