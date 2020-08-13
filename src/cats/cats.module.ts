@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { CatsResolvers } from './cats.resolvers';
 import { CatsService } from './cats.service';
-import { CatsProviders } from './cats.providers';
 import { CatSchema } from './schemas/cat.schema';
 
 @Module({
