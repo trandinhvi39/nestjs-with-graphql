@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { CatsModule } from './cats/cats.module';
 import { EasyconfigModule } from 'nestjs-easyconfig';
 import { MongooseModule } from '@nestjs/mongoose';
-// import { DateScalar } from './common/scalars/date.scalar';
 
+// import { DateScalar } from './scalars/date.scalar';
+import { CatsModule } from './cats/cats.module';
 import { ConfigService } from './configs/config.service';
 import { ConfigModule } from './configs/config.module';
 

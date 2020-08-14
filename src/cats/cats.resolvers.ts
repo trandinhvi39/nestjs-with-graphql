@@ -1,8 +1,8 @@
 import { UseGuards, UseFilters } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { Cat } from '../schema/graphql.schema';
 
+import { Cat } from '../schema/graphql.schema';
 import { CatsGuard } from './cats.guard';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
