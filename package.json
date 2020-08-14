@@ -32,6 +32,7 @@
     "graphql-tools": "^6.0.18",
     "mongoose": "^5.9.28",
     "nestjs-easyconfig": "^2.0.3",
+    "nestjs-i18n": "^8.0.8",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.2"
