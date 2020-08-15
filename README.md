@@ -22,6 +22,9 @@ $ npm run start:prod
 
 # generate schema
 $ npm run generate:schema
+
+# seed cats data
+$ npx nestjs-command seed:cats
 ```
 
 ## Test
