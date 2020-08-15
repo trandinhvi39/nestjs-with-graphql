@@ -25,6 +25,9 @@ $ npm run generate:schema
 
 # seed cats data
 $ npx nestjs-command seed:cats
+
+# eslint check
+$ npm run lint
 ```
 
 ## Test

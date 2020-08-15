@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { EasyconfigService } from 'nestjs-easyconfig';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { CatsResolvers } from './cats.resolvers';

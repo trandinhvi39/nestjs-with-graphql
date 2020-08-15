@@ -20,6 +20,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "generate:schema": "ts-node src/generate-typings.ts"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  },
   "dependencies": {
     "@nestjs/common": "^7.4.2",
     "@nestjs/core": "^7.4.2",
@@ -54,6 +59,7 @@
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.2.5",
     "jest": "^26.4.0",
     "prettier": "^2.0.5",
     "supertest": "^4.0.2",

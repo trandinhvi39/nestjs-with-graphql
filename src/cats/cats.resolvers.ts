@@ -1,7 +1,6 @@
 import { UseGuards, UseFilters } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { I18nRequestScopeService } from 'nestjs-i18n';
 
 import { Cat } from '../schema/graphql.schema';
 import { CatsGuard } from './cats.guard';
@@ -17,7 +16,7 @@ export class CatsResolvers {
 
   @Query()
   @UseGuards(CatsGuard)
-  async getCats() {
+  async getCats(): Promise<Array<Cat>> {
     return this.catsService.findAll();
   }
 
@@ -35,7 +34,7 @@ export class CatsResolvers {
   }
 
   @Subscription('catCreated')
-  catCreated() {
+  catCreated(): any {
     return pubSub.asyncIterator('catCreated');
   }
 }

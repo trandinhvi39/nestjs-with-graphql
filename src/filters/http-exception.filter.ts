@@ -1,14 +1,9 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, HttpException } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-express';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: HttpException): any {
     const status = exception.getStatus();
     switch (status) {
       case 400:
