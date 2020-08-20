@@ -17,11 +17,13 @@ import { CatsModule } from './cats/cats.module';
 import { ConfigService } from './configs/config.service';
 import { ConfigModule } from './configs/config.module';
 import { SeedModule } from './seeds/seed.module';
+import { HealthcheckModule } from './healthcheck/healthcheck.module';
 
 @Module({
   // providers: [DateScalar],
   imports: [
     CatsModule,
+    HealthcheckModule,
     SeedModule,
     EasyconfigModule.register({ path: '.env', safe: true }),
     I18nModule.forRoot({

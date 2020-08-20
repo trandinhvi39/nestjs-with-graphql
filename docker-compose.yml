@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./containers/node/Dockerfile
+    volumes:
+      - .:/opt/app
+      - /opt/app/node_modules
+    networks:
+      - db-network
+    command: /usr/local/wait-for-it.sh mongodb:27017 -- npm start
+    env_file: ./containers/node/env
+    ports:
+      - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
+    depends_on:
+      - mongodb
+    healthcheck:
+      test: curl -sS http://localhost:${GRAPHQL_SERVER_PORT}/healthcheck
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - db-data:/data/db
+    networks:
+      - db-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/?authSource=${DB_NAME} --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  db-data:
+
+networks:
+  db-network:
+    driver: bridge

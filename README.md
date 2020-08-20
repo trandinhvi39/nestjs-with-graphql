@@ -30,6 +30,19 @@ $ npx nestjs-command seed:cats
 $ npm run lint
 ```
 
+## Setup with Docker
+
+```bash
+# build node image
+$ docker-compose build
+
+# start the services
+$ docker-compose up -d
+
+# view the logs
+docker-compose logs -f
+```
+
 ## Test
 
 ```bash
