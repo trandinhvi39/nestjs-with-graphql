@@ -54,6 +54,7 @@ import formatErrorResponse from './configs/formatError';
       typePaths: ['./**/*.graphql'],
       installSubscriptionHandlers: true,
       introspection: true,
+      debug: process.env.APP_ENV !== 'prod',
       playground: process.env.APP_ENV !== 'prod',
       uploads: {
         maxFileSize: constant.fileUploadConfig.maxFileSize,
@@ -67,6 +68,7 @@ import formatErrorResponse from './configs/formatError';
         onDisconnect: async (webSocket, connectionParams) => console.log('Disconnect'),
         keepAlive: constant.subscriptions.keepAlive,
       },
+      cors: false,
     }),
   ],
 })
