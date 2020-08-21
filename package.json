@@ -41,7 +41,9 @@
     "nestjs-i18n": "^8.0.8",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.2"
+    "rxjs": "^6.6.2",
+    "winston": "^3.3.3",
+    "winston-cloudwatch": "^2.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.4.1",

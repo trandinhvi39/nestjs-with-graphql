@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { EasyconfigModule } from 'nestjs-easyconfig';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -18,6 +18,7 @@ import { ConfigService } from './configs/config.service';
 import { ConfigModule } from './configs/config.module';
 import { SeedModule } from './seeds/seed.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 
 @Module({
   // providers: [DateScalar],
@@ -56,4 +57,8 @@ import { HealthcheckModule } from './healthcheck/healthcheck.module';
     }),
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

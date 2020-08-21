@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { I18nRequestScopeService } from 'nestjs-i18n';
 
 import { Cat } from './interfaces/cat.interface';
 import { CreateCatDto } from './dto/create-cat.dto';
-import { I18nRequestScopeService } from 'nestjs-i18n';
 
 @Injectable()
 export class CatsService {
