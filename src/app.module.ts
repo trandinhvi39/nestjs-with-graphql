@@ -8,7 +8,6 @@ import {
   I18nJsonParser,
   QueryResolver,
   CookieResolver,
-  AcceptLanguageResolver,
   HeaderResolver,
 } from 'nestjs-i18n';
 
@@ -36,7 +35,6 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       resolvers: [
         { use: QueryResolver, options: ['lang', 'locale', 'l'] },
         new HeaderResolver(['x-custom-lang']),
-        AcceptLanguageResolver,
         new CookieResolver(['lang', 'locale', 'l']),
       ],
     }),
