@@ -1,5 +1,5 @@
 import { ExceptionFilter, Catch, HttpException } from '@nestjs/common';
-import { UserInputError } from 'apollo-server-express';
+import { UserInputError, ApolloError } from 'apollo-server-express';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -9,7 +9,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       case 400:
         return new UserInputError(exception.getResponse()['message']);
       default:
-        return new Error('Server Error');
+        return new ApolloError('Server Error');
     }
   }
 }

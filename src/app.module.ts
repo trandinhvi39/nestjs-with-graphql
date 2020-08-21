@@ -10,6 +10,7 @@ import {
   CookieResolver,
   HeaderResolver,
 } from 'nestjs-i18n';
+const { FormatErrorWithContextExtension } = require('graphql-format-error-context-extension');
 
 // import { DateScalar } from './scalars/date.scalar';
 import { CatsModule } from './cats/cats.module';
@@ -18,6 +19,8 @@ import { ConfigModule } from './configs/config.module';
 import { SeedModule } from './seeds/seed.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import constant from './configs/constant';
+import formatErrorResponse from './configs/formatError';
 
 @Module({
   // providers: [DateScalar],
@@ -50,8 +53,20 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       installSubscriptionHandlers: true,
-      debug: true,
-      playground: true,
+      introspection: true,
+      playground: process.env.APP_ENV !== 'prod',
+      uploads: {
+        maxFileSize: constant.fileUploadConfig.maxFileSize,
+        maxFiles: constant.fileUploadConfig.maxFiles,
+      },
+      extensions: [() => new FormatErrorWithContextExtension(formatErrorResponse)],
+      subscriptions: {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        onConnect: async (connectionParams, webSocket) => console.log('Connect'),
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        onDisconnect: async (webSocket, connectionParams) => console.log('Disconnect'),
+        keepAlive: constant.subscriptions.keepAlive,
+      },
     }),
   ],
 })
