@@ -19,14 +19,18 @@ import { ConfigModule } from './configs/config.module';
 import { SeedModule } from './seeds/seed.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { PubSubModule } from './configs/pubsub.module';
 import constant from './configs/constant';
 import formatErrorResponse from './configs/formatError';
 
 @Module({
-  // providers: [DateScalar],
+  providers: [
+    // DateScalar,
+  ],
   imports: [
     CatsModule,
     HealthcheckModule,
+    PubSubModule,
     SeedModule,
     EasyconfigModule.register({ path: '.env', safe: true }),
     I18nModule.forRoot({

@@ -17,7 +17,7 @@ export class CatsService {
     //await this.i18n.translate('cat.key')
     const createdCat = new this.catModel(createCatDto);
     await createdCat.save();
-    return createdCat;
+    return createdCat.toClient();
   }
 
   async findAll(): Promise<Cat[]> {
