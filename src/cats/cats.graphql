@@ -1,3 +1,14 @@
+type Cat {
+  id: String
+  name: String
+  age: Int
+}
+
+input CreateCatInput {
+  name: String!
+  age: Int!
+}
+
 type Query {
   getCats: [Cat]
   cat(id: String!): Cat
@@ -9,15 +20,4 @@ type Mutation {
 
 type Subscription {
   catCreated: Cat
-}
-
-type Cat {
-  id: String
-  name: String
-  age: Int
-}
-
-input CreateCatInput {
-  name: String!
-  age: Int!
 }

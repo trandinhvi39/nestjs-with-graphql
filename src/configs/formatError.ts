@@ -9,7 +9,10 @@ const formatErrorResponse = (error) => {
       message: error.message,
       code: error.extensions.code,
     };
-    if (error.originalError instanceof AuthenticationError) {
+    if (
+      error.originalError instanceof AuthenticationError ||
+      error.extensions.code == 'INTERNAL_SERVER_ERROR'
+    ) {
       errorResponse.status = constant.statusCode.unauthenticated;
     }
     if (error.originalError instanceof ApolloError) {

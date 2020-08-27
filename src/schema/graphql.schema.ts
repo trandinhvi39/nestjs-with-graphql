@@ -10,10 +10,22 @@ export class CreateCatInput {
   age: number;
 }
 
+export class Token {
+  accessToken: string;
+}
+
 export abstract class IQuery {
+  abstract login(username: string, password: string): Token | Promise<Token>;
+
   abstract getCats(): Cat[] | Promise<Cat[]>;
 
   abstract cat(id: string): Cat | Promise<Cat>;
+}
+
+export class Cat {
+  id?: string;
+  name?: string;
+  age?: number;
 }
 
 export abstract class IMutation {
@@ -22,10 +34,4 @@ export abstract class IMutation {
 
 export abstract class ISubscription {
   abstract catCreated(): Cat | Promise<Cat>;
-}
-
-export class Cat {
-  id?: string;
-  name?: string;
-  age?: number;
 }

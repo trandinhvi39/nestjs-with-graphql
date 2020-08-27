@@ -16,10 +16,13 @@ const { FormatErrorWithContextExtension } = require('graphql-format-error-contex
 import { CatsModule } from './cats/cats.module';
 import { ConfigService } from './configs/config.service';
 import { ConfigModule } from './configs/config.module';
-import { SeedModule } from './seeds/seed.module';
+import { CatsSeedModule } from './seeds/cats.seed.module';
+import { UsersSeedModule } from './seeds/users.seed.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { PubSubModule } from './configs/pubsub.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import constant from './configs/constant';
 import formatErrorResponse from './configs/formatError';
 
@@ -29,9 +32,12 @@ import formatErrorResponse from './configs/formatError';
   ],
   imports: [
     CatsModule,
+    AuthModule,
+    UsersModule,
     HealthcheckModule,
     PubSubModule,
-    SeedModule,
+    CatsSeedModule,
+    UsersSeedModule,
     EasyconfigModule.register({ path: '.env', safe: true }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
@@ -56,6 +62,7 @@ import formatErrorResponse from './configs/formatError';
     }),
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ req }),
       installSubscriptionHandlers: true,
       introspection: true,
       debug: process.env.APP_ENV !== 'prod',

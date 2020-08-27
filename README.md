@@ -26,6 +26,9 @@ $ npm run generate:schema
 # seed cats data
 $ npx nestjs-command seed:cats
 
+# seed users data
+$ npx nestjs-command seed:users
+
 # eslint check
 $ npm run lint
 ```

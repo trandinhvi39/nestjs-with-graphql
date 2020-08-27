@@ -7,6 +7,10 @@ import { CatsGuard } from './cats.guard';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+import { User as CurrentUser } from '../users/users.decorator';
+import { User } from '../users/interfaces/user.interface';
 
 @Resolver('Cat')
 export class CatsResolvers {
@@ -15,13 +19,15 @@ export class CatsResolvers {
     private readonly catsService: CatsService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query()
-  @UseGuards(CatsGuard)
-  async getCats(): Promise<Array<Cat>> {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  async getCats(@CurrentUser() user: User): Promise<Array<Cat>> {
     return this.catsService.findAll();
   }
 
   @Query('cat')
+  @UseGuards(CatsGuard)
   async findOneById(id: string): Promise<Cat> {
     return this.catsService.findOneById(id);
   }
