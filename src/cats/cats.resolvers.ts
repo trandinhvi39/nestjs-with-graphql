@@ -26,9 +26,9 @@ export class CatsResolvers {
     return this.catsService.findAll();
   }
 
-  @Query('cat')
   @UseGuards(CatsGuard)
-  async findOneById(id: string): Promise<Cat> {
+  @Query('cat')
+  async cat(@Args('id') id: string): Promise<Cat> {
     return this.catsService.findOneById(id);
   }
 

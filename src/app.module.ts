@@ -11,8 +11,9 @@ import {
   HeaderResolver,
 } from 'nestjs-i18n';
 const { FormatErrorWithContextExtension } = require('graphql-format-error-context-extension');
+import { AuthenticationError } from 'apollo-server-express';
 
-// import { DateScalar } from './scalars/date.scalar';
+import { EmailScalar } from './scalars/email.scalar';
 import { CatsModule } from './cats/cats.module';
 import { ConfigService } from './configs/config.service';
 import { ConfigModule } from './configs/config.module';
@@ -22,14 +23,13 @@ import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { PubSubModule } from './configs/pubsub.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 import { UsersModule } from './users/users.module';
 import constant from './configs/constant';
 import formatErrorResponse from './configs/formatError';
 
 @Module({
-  providers: [
-    // DateScalar,
-  ],
+  providers: [EmailScalar],
   imports: [
     CatsModule,
     AuthModule,
@@ -60,26 +60,38 @@ import formatErrorResponse from './configs/formatError';
       }),
       inject: [ConfigService],
     }),
-    GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
-      context: ({ req }) => ({ req }),
-      installSubscriptionHandlers: true,
-      introspection: true,
-      debug: process.env.APP_ENV !== 'prod',
-      playground: process.env.APP_ENV !== 'prod',
-      uploads: {
-        maxFileSize: constant.fileUploadConfig.maxFileSize,
-        maxFiles: constant.fileUploadConfig.maxFiles,
-      },
-      extensions: [() => new FormatErrorWithContextExtension(formatErrorResponse)],
-      subscriptions: {
-        /* eslint-disable @typescript-eslint/no-unused-vars */
-        onConnect: async (connectionParams, webSocket) => console.log('Connect'),
-        /* eslint-disable @typescript-eslint/no-unused-vars */
-        onDisconnect: async (webSocket, connectionParams) => console.log('Disconnect'),
-        keepAlive: constant.subscriptions.keepAlive,
-      },
-      cors: false,
+    GraphQLModule.forRootAsync({
+      imports: [AuthModule],
+      useFactory: async (authService: AuthService) => ({
+        typePaths: ['./**/*.graphql'],
+        installSubscriptionHandlers: true,
+        introspection: true,
+        debug: process.env.APP_ENV !== 'prod',
+        playground: process.env.APP_ENV !== 'prod',
+        uploads: {
+          maxFileSize: constant.fileUploadConfig.maxFileSize,
+          maxFiles: constant.fileUploadConfig.maxFiles,
+        },
+        extensions: [() => new FormatErrorWithContextExtension(formatErrorResponse)],
+        context: ({ req }) => ({ req }),
+        subscriptions: {
+          /* eslint-disable @typescript-eslint/no-unused-vars */
+          onConnect: async (connectionParams: any, webSocket) => {
+            console.log('Connected');
+            const token = connectionParams.Authorization
+              ? connectionParams.Authorization.replace('Bearer ', '')
+              : null;
+            if (!token || !authService.verifyJwt(token)) {
+              throw new AuthenticationError('Unauthenticated');
+            }
+          },
+          /* eslint-disable @typescript-eslint/no-unused-vars */
+          onDisconnect: async (webSocket, connectionParams) => console.log('Disconnect'),
+          keepAlive: constant.subscriptions.keepAlive,
+        },
+        cors: false,
+      }),
+      inject: [AuthService],
     }),
   ],
 })

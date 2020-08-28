@@ -11,11 +11,12 @@ const formatErrorResponse = (error) => {
     };
     if (
       error.originalError instanceof AuthenticationError ||
-      error.extensions.code == 'INTERNAL_SERVER_ERROR'
+      error.extensions.code === 'UNAUTHENTICATED' ||
+      (error.extensions.exception &&
+        error.extensions.exception.status === constant.statusCode.unauthenticated)
     ) {
       errorResponse.status = constant.statusCode.unauthenticated;
-    }
-    if (error.originalError instanceof ApolloError) {
+    } else if (error.originalError instanceof ApolloError) {
       errorResponse.message = error.message.replace('Error: ', '');
       errorResponse.status =
         error.extensions.code === 'BAD_USER_INPUT'

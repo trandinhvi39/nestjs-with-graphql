@@ -11,8 +11,7 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOneByEmail(username);
-    const isMatchingPassword = await bcrypt.compare(password, user.password);
-    if (user && isMatchingPassword) return user;
+    if (user && (await bcrypt.compare(password, user.password))) return user;
     return null;
   }
 
@@ -22,5 +21,13 @@ export class AuthService {
     delete payload._id;
     delete payload.password;
     return { accessToken: this.jwtService.sign(payload) };
+  }
+
+  verifyJwt(token) {
+    try {
+      return this.jwtService.verify(token);
+    } catch {
+      return false;
+    }
   }
 }

@@ -15,7 +15,7 @@ export class Token {
 }
 
 export abstract class IQuery {
-  abstract login(username: string, password: string): Token | Promise<Token>;
+  abstract login(username: Email, password: string): Token | Promise<Token>;
 
   abstract getCats(): Cat[] | Promise<Cat[]>;
 
@@ -35,3 +35,5 @@ export abstract class IMutation {
 export abstract class ISubscription {
   abstract catCreated(): Cat | Promise<Cat>;
 }
+
+export type Email = any;
